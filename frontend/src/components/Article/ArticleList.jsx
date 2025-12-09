@@ -4,7 +4,7 @@ import ArticleCard from './ArticleCard.jsx';
 
 const ArticleList = ({ articles }) => {
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={{ xs: 3, md: 4 }}>
       {articles.map((article) => (
         <Grid item xs={12} sm={6} md={4} key={article.id}>
           <ArticleCard article={article} />

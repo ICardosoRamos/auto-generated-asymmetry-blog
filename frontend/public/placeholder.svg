@@ -1,0 +1,42 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E2749" />
+      <stop offset="100%" stop-color="#0A0E27" />
+    </linearGradient>
+    <radialGradient id="glow" cx="30%" cy="30%" r="40%">
+      <stop offset="0%" stop-color="#5C6BC0" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#5C6BC0" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)" />
+  <rect width="800" height="600" fill="url(#glow)" />
+  <g fill="none" stroke="#9FA8DA" stroke-opacity="0.15">
+    <circle cx="650" cy="80" r="70" />
+    <circle cx="120" cy="520" r="110" />
+    <path d="M120 120 Q200 80 280 120 T440 120" />
+    <path d="M120 180 Q220 140 320 180 T520 180" />
+  </g>
+  <text
+    x="50%"
+    y="55%"
+    text-anchor="middle"
+    fill="#E8EAF6"
+    font-family="Space Grotesk, Inter, Helvetica, Arial, sans-serif"
+    font-size="42"
+    font-weight="700"
+  >
+    AutoBlog
+  </text>
+  <text
+    x="50%"
+    y="62%"
+    text-anchor="middle"
+    fill="#B8C1EC"
+    font-family="Space Grotesk, Inter, Helvetica, Arial, sans-serif"
+    font-size="18"
+    font-weight="500"
+  >
+    IA • Tecnologia • Inovação
+  </text>
+</svg>

@@ -2,43 +2,74 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: 'dark',
     primary: {
-      main: '#1565c0',
+      main: '#5C6BC0',
+      contrastText: '#E8EAF6',
     },
     secondary: {
-      main: '#f57c00',
+      main: '#9FA8DA',
     },
     background: {
-      default: '#f6f8fb',
-      paper: '#ffffff',
+      default: '#0A0E27',
+      paper: '#121735',
     },
+    text: {
+      primary: '#E8EAF6',
+      secondary: '#B8C1EC',
+    },
+    divider: 'rgba(255, 255, 255, 0.08)',
   },
   typography: {
-    fontFamily: '"Segoe UI", "Helvetica Neue", Arial, sans-serif',
+    fontFamily: '"Space Grotesk", "Inter", "Helvetica Neue", Arial, sans-serif',
     fontSize: 14,
-    h1: { fontWeight: 700 },
-    h2: { fontWeight: 700 },
-    h3: { fontWeight: 700 },
+    h1: { fontWeight: 700, letterSpacing: '-0.02em' },
+    h2: { fontWeight: 700, letterSpacing: '-0.01em' },
+    h3: { fontWeight: 700, letterSpacing: '-0.01em' },
     h4: { fontWeight: 600 },
     h5: { fontWeight: 600 },
     button: { textTransform: 'none', fontWeight: 600 },
   },
   shape: {
-    borderRadius: 10,
+    borderRadius: 14,
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#0A0E27',
+          backgroundImage:
+            'radial-gradient(circle at 20% 20%, rgba(92, 107, 192, 0.08) 0, transparent 30%), radial-gradient(circle at 80% 0%, rgba(159, 168, 218, 0.08) 0, transparent 26%)',
+          color: '#E8EAF6',
+        },
+        a: {
+          color: 'inherit',
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
-          boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+          boxShadow: '0 16px 40px rgba(0,0,0,0.35)',
+          backgroundImage: 'linear-gradient(145deg, rgba(255,255,255,0.02), rgba(255,255,255,0))',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 10,
         },
       },
     },
     MuiAppBar: {
+      defaultProps: {
+        color: 'transparent',
+      },
       styleOverrides: {
-        colorPrimary: {
-          background: 'linear-gradient(120deg, #0d47a1, #1565c0)',
+        root: {
+          backgroundColor: 'rgba(10, 14, 39, 0.82)',
+          backdropFilter: 'blur(16px)',
         },
       },
     },

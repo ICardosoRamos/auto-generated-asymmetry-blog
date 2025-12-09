@@ -7,10 +7,11 @@ const ErrorState = ({ message, onRetry }) => {
     <Box
       sx={{
         p: 4,
-        backgroundColor: 'background.paper',
-        borderRadius: 2,
+        background: 'linear-gradient(150deg, rgba(255,79,112,0.08), rgba(92,107,192,0.08))',
+        borderRadius: 3,
         textAlign: 'center',
-        boxShadow: '0 10px 30px rgba(0,0,0,0.04)',
+        border: '1px solid rgba(255,255,255,0.12)',
+        color: '#E8EAF6',
       }}
     >
       <Stack spacing={2} alignItems="center">

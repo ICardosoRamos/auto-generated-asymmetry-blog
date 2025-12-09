@@ -6,12 +6,20 @@ import ArticleDetail from '../components/Article/ArticleDetail.jsx';
 import ErrorState from '../components/Feedback/ErrorState.jsx';
 
 const ArticleSkeleton = () => (
-  <Box sx={{ p: { xs: 3, md: 4 }, backgroundColor: 'background.paper', borderRadius: 2 }}>
+  <Box
+    sx={{
+      p: { xs: 3, md: 4 },
+      background: 'linear-gradient(140deg, #151B3D 0%, #0F122B 100%)',
+      borderRadius: 3,
+      border: '1px solid rgba(255, 255, 255, 0.08)',
+    }}
+  >
     <Stack spacing={2}>
-      <Skeleton variant="text" width="60%" height={48} />
-      <Skeleton variant="text" width="30%" />
-      <Skeleton variant="rectangular" height={180} />
-      <Skeleton variant="rectangular" height={180} />
+      <Skeleton variant="rectangular" height={220} sx={{ bgcolor: 'rgba(255,255,255,0.06)' }} />
+      <Skeleton variant="text" width="60%" height={48} sx={{ bgcolor: 'rgba(255,255,255,0.08)' }} />
+      <Skeleton variant="text" width="30%" sx={{ bgcolor: 'rgba(255,255,255,0.08)' }} />
+      <Skeleton variant="rectangular" height={140} sx={{ bgcolor: 'rgba(255,255,255,0.06)' }} />
+      <Skeleton variant="rectangular" height={120} sx={{ bgcolor: 'rgba(255,255,255,0.06)' }} />
     </Stack>
   </Box>
 );

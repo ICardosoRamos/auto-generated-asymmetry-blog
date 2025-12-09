@@ -1,4 +1,4 @@
-import { Pool, QueryResult } from 'pg';
+import { Pool, QueryResult, QueryResultRow } from 'pg';
 
 const {
   DB_HOST,
@@ -16,6 +16,8 @@ const pool = new Pool({
   database: DB_NAME,
 });
 
-export const query = <T = any>(text: string, params?: unknown[]): Promise<QueryResult<T>> =>
-  pool.query<T>(text, params);
+export const query = <T extends QueryResultRow = QueryResultRow>(
+  text: string,
+  params?: unknown[],
+): Promise<QueryResult<T>> => pool.query<T>(text, params);
 export const getClient = () => pool.connect();
