@@ -1,12 +1,12 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import cors from 'cors';
-import { query } from './config/db.js';
-import { countArticles } from './models/articleModel.js';
-import { generateAndStoreArticle } from './services/articleService.js';
-import healthRouter from './routes/health.js';
-import articlesRouter from './routes/articles.js';
-import { scheduleDailyArticleJob } from './jobs/articleJob.js';
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import { query } from "./config/db.js";
+import { countArticles } from "./models/articleModel.js";
+import { generateAndStoreArticle } from "./services/articleService.js";
+import healthRouter from "./routes/health.js";
+import articlesRouter from "./routes/articles.js";
+import { scheduleDailyArticleJob } from "./jobs/articleJob.js";
 
 dotenv.config();
 
@@ -19,11 +19,14 @@ const PORT = Number(process.env.PORT || 4000);
 const waitForDb = async (retries = 10, delayMs = 2000): Promise<void> => {
   for (let attempt = 1; attempt <= retries; attempt += 1) {
     try {
-      await query('SELECT 1');
+      await query("SELECT 1");
       return;
     } catch (err) {
       const error = err as Error;
-      console.warn(`DB not ready (attempt ${attempt}/${retries}):`, error.message);
+      console.warn(
+        `DB not ready (attempt ${attempt}/${retries}):`,
+        error.message
+      );
       if (attempt === retries) {
         throw err;
       }
@@ -59,17 +62,19 @@ const start = async () => {
     await createArticlesTable();
     await seedInitialArticles();
 
-    app.use('/health', healthRouter);
-    app.use('/articles', articlesRouter);
+    app.use("/health", healthRouter);
+    app.use("/articles", articlesRouter);
 
-    const cronExpression = process.env.ARTICLE_CRON_EXPRESSION || '0 9 * * *';
+    console.log("Database is ready and initial articles are seeded.");
+
+    const cronExpression = process.env.ARTICLE_CRON_EXPRESSION || "** * * *";
     scheduleDailyArticleJob(cronExpression);
 
     app.listen(PORT, () => {
       console.log(`Backend listening on port ${PORT}`);
     });
   } catch (error) {
-    console.error('Failed to start server', error);
+    console.error("Failed to start server", error);
     process.exit(1);
   }
 };
