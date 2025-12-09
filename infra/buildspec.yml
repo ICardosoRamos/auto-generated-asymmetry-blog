@@ -1,0 +1,34 @@
+version: 0.2
+
+env:
+  variables:
+    # TODO: Ajuste AWS_REGION, BACKEND_IMAGE_REPO_NAME e FRONTEND_IMAGE_REPO_NAME conforme seus repositórios ECR.
+    AWS_REGION: us-east-1
+    BACKEND_IMAGE_REPO_NAME: ai-blog-backend
+    FRONTEND_IMAGE_REPO_NAME: ai-blog-frontend
+
+phases:
+  pre_build:
+    commands:
+      - echo "Detectando conta AWS..."
+      - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - REPOSITORY_BACKEND="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$BACKEND_IMAGE_REPO_NAME"
+      - REPOSITORY_FRONTEND="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$FRONTEND_IMAGE_REPO_NAME"
+      - echo "Login no ECR..."
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      - echo "Usando tag $IMAGE_TAG"
+  build:
+    commands:
+      - echo "Build do backend..."
+      - docker build -t $REPOSITORY_BACKEND:$IMAGE_TAG -f backend/Dockerfile .
+      - echo "Build do frontend..."
+      - docker build -t $REPOSITORY_FRONTEND:$IMAGE_TAG -f frontend/Dockerfile .
+  post_build:
+    commands:
+      - echo "Publicando imagens..."
+      - docker push $REPOSITORY_BACKEND:$IMAGE_TAG
+      - docker push $REPOSITORY_FRONTEND:$IMAGE_TAG
+      - echo "Build e push concluídos."
+
+# TODO: Garanta políticas de IAM adequadas para permitir sts, ecr:GetAuthorizationToken, ecr:BatchCheckLayerAvailability, ecr:PutImage, ecr:InitiateLayerUpload, ecr:UploadLayerPart, ecr:CompleteLayerUpload, ecr:BatchGetImage.
