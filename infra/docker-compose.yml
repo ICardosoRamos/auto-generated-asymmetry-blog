@@ -18,7 +18,7 @@ services:
       context: ..
       dockerfile: backend/Dockerfile
       target: builder
-    command: npm run dev
+    command: sh -c "npm run migrate:init && npm run dev"
     env_file:
       - ../backend/.env
     volumes:
@@ -30,14 +30,36 @@ services:
     ports:
       - "4000:4000"
 
+  pgadmin:
+    image: dpage/pgadmin4:8
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@mail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 5050
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    depends_on:
+      - db
+    ports:
+      - "5050:5050"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+
   frontend:
     build:
       context: ..
       dockerfile: frontend/Dockerfile
+      target: build
+    command: sh -c "CHOKIDAR_USEPOLLING=true npm run dev -- --host --port 5173"
+    working_dir: /app
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
     depends_on:
       - backend
     ports:
-      - "8080:80"
+      - "8080:5173"
 
 volumes:
   db_data:
+  pgadmin_data:
