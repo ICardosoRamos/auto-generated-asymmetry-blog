@@ -83,6 +83,7 @@ const AdminPage = () => {
           </Typography>
           <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} useFlexGap>
             <TextField
+              size="small"
               label="Admin secret"
               type="password"
               value={secret}
@@ -91,13 +92,20 @@ const AdminPage = () => {
               sx={{ minWidth: 240 }}
             />
             <TextField
+              size="small"
               label="Topic (optional)"
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               helperText="3 to 80 characters if provided"
               sx={{ minWidth: 240 }}
             />
-            <Button variant="contained" onClick={handleGenerate} disabled={loading || !secret.trim()}>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={handleGenerate}
+              disabled={loading || !secret.trim()}
+              sx={{ minWidth: 140, height: 40 }}
+            >
               {loading ? 'Generating...' : 'Generate now'}
             </Button>
           </Stack>

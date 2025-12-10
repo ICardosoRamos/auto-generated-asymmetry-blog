@@ -1,16 +1,16 @@
-# Arquitetura
+# Architecture
 
-## Visão geral
+## Overview
 - Browser → **Frontend (React + Vite + Material UI)** → **Backend (Node.js + Express)** → **Postgres**.
-- O frontend consome endpoints REST para listar e detalhar artigos.
-- O backend expõe `/health`, `/articles` e `/articles/:id`, além de um endpoint protegido para gerar artigos.
+- The frontend consumes REST endpoints to list and view articles.
+- The backend exposes `/health`, `/articles`, and `/articles/:id`, plus a protected endpoint to generate articles.
 
-## Geração automática de artigos
-- Um job diário (node-cron) chama `aiClient` (placeholder) para gerar conteúdo.
-- `articleService` persiste o resultado em Postgres (tabela `articles`).
-- Ao subir a API, pelo menos 3 artigos são criados automaticamente caso o banco esteja vazio.
+## Automatic article generation
+- A daily job (node-cron) calls `aiClient` (placeholder/OpenAI) to generate content.
+- `articleService` persists the result in Postgres (table `articles`), applying basic deduplication.
+- When the API starts, at least 3 articles are created automatically if the database is empty.
 
-## Fluxo de deploy (conceitual)
-- Código → CodeBuild → build das imagens (frontend e backend) → push para ECR.
-- EC2 consome as imagens do ECR.
-- Scripts `init-ec2.sh` e `deploy.sh` servem como rascunho para preparar a instância e subir containers.
+## Deploy flow (conceptual)
+- Code → CodeBuild → build images (frontend and backend) → push to ECR.
+- EC2 pulls images from ECR.
+- Scripts `init-ec2.sh` and `deploy.sh` are sketches to prepare the instance and run containers.

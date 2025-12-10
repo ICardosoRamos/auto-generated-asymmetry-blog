@@ -17,13 +17,8 @@ services:
     build:
       context: ..
       dockerfile: backend/Dockerfile
-      target: builder
-    command: sh -c "npm run migrate:init && npm run dev"
     env_file:
       - ../backend/.env
-    volumes:
-      - ../backend:/app
-      - /app/node_modules
     depends_on:
       db:
         condition: service_healthy
@@ -49,16 +44,10 @@ services:
     build:
       context: ..
       dockerfile: frontend/Dockerfile
-      target: build
-    command: sh -c "CHOKIDAR_USEPOLLING=true npm run dev -- --host --port 5173"
-    working_dir: /app
-    volumes:
-      - ../frontend:/app
-      - /app/node_modules
     depends_on:
       - backend
     ports:
-      - "8080:5173"
+      - "8080:80"
 
 volumes:
   db_data:
