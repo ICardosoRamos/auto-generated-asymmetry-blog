@@ -194,7 +194,7 @@ const ArticlesPage = () => {
               onClick={handleSearchSubmit}
               sx={{ minWidth: 120, height: 40 }}
             >
-              Okei
+              Search
             </Button>
             <TextField
               size="small"
