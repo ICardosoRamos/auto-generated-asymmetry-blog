@@ -9,10 +9,10 @@ type GeneratedArticle = InsertArticleInput & {
 };
 
 const loremParagraphs = [
-  "A inteligência artificial vem transformando o cenário tecnológico com inovações que ampliam a produtividade e a criatividade das equipes.",
-  "Ao combinar análise de dados com modelos avançados, é possível gerar insights que antes demandavam semanas de trabalho manual.",
-  "Para aproveitar esse movimento, empresas têm investido em automação, boas práticas de engenharia e uma cultura de experimentação constante.",
-  "Mesmo com ferramentas poderosas, o papel humano segue essencial: orientar, revisar e alinhar a tecnologia às necessidades reais do negócio.",
+  "Artificial intelligence is reshaping the tech landscape with innovations that boost productivity and creativity across teams.",
+  "By combining data analysis with advanced models, it is possible to generate insights that once required weeks of manual effort.",
+  "To ride this wave, companies are investing in automation, solid engineering practices, and a culture of constant experimentation.",
+  "Even with powerful tools, the human role remains essential: guiding, reviewing, and aligning technology to real business needs.",
 ];
 
 const pickSampleParagraphs = () => {
@@ -33,8 +33,8 @@ const parseJsonFromText = (
 };
 
 const buildFallbackArticle = (topic?: string | null): GeneratedArticle => {
-  const subject = topic || "Tendências de tecnologia e produtividade";
-  const title = `Insights sobre ${subject}`;
+  const subject = topic || "Technology trends and productivity";
+  const title = `Insights about ${subject}`;
   const content = pickSampleParagraphs();
 
   return {
@@ -67,12 +67,12 @@ const generateFromOpenAI = async (
     throw new Error("Missing OPENAI_API_KEY");
   }
 
-  const subject = topic || "tendências de tecnologia e produtividade";
+  const subject = topic || "technology trends and productivity";
 
   const prompt = [
-    "Gere um artigo curto e coerente em português.",
-    "Use um título forte e um corpo com 3-5 parágrafos.",
-    'Responda somente em JSON com as chaves "title" e "content".',
+    "Generate a short, coherent blog article in English.",
+    "Use a strong title and a body with 3-5 paragraphs.",
+    'Respond only in JSON with keys "title", "content", and optionally "topic".',
   ].join(" ");
 
   const payload = {
@@ -83,11 +83,11 @@ const generateFromOpenAI = async (
       {
         role: "system",
         content:
-          "Você é um assistente que cria artigos de blog concisos. Sempre responda apenas em JSON com as chaves title e content.",
+          "You are an assistant that creates concise blog articles. Always reply only in JSON with keys title, content, and optionally topic.",
       },
       {
         role: "user",
-        content: `${prompt} Tópico: ${subject}`,
+        content: `${prompt} Topic: ${subject}`,
       },
     ],
   };

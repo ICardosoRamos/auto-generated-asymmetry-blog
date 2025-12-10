@@ -6,7 +6,7 @@ COPY backend/package*.json ./
 COPY backend/tsconfig.json ./
 RUN npm install
 
-COPY backend/src ./src
+COPY backend/ ./
 RUN npm run build
 
 FROM node:20-alpine

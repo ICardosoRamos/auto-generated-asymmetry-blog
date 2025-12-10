@@ -48,11 +48,18 @@ const createArticlesTable = async (): Promise<void> => {
   `);
 };
 
-const seedInitialArticles = async (minArticles = 3): Promise<void> => {
+const seedInitialArticles = async (): Promise<void> => {
+  const minArticles = Number(process.env.MIN_ARTICLES_SEED || 3);
   let current = await countArticles();
+
   while (current < minArticles) {
-    await generateAndStoreArticle();
-    current += 1;
+    try {
+      await generateAndStoreArticle();
+      current += 1;
+    } catch (error) {
+      console.error("Failed to seed article", error);
+      break;
+    }
   }
 };
 
@@ -67,7 +74,10 @@ const start = async () => {
 
     console.log("Database is ready and initial articles are seeded.");
 
-    const cronExpression = process.env.ARTICLE_CRON_EXPRESSION || "** * * *";
+    const cronExpression = process.env.ARTICLE_CRON_EXPRESSION || "0 9 * * *";
+    console.log(
+      `Scheduling article job with cron expression: ${cronExpression}`
+    );
     scheduleDailyArticleJob(cronExpression);
 
     app.listen(PORT, () => {
