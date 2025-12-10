@@ -2,7 +2,6 @@ version: 0.2
 
 env:
   variables:
-    # TODO: Ajuste AWS_REGION, BACKEND_IMAGE_REPO_NAME e FRONTEND_IMAGE_REPO_NAME conforme seus repositórios ECR.
     AWS_REGION: us-east-1
     BACKEND_IMAGE_REPO_NAME: ai-blog-backend
     FRONTEND_IMAGE_REPO_NAME: ai-blog-frontend
@@ -27,8 +26,10 @@ phases:
   post_build:
     commands:
       - echo "Publicando imagens..."
+      - docker tag $REPOSITORY_BACKEND:$IMAGE_TAG $REPOSITORY_BACKEND:latest
+      - docker tag $REPOSITORY_FRONTEND:$IMAGE_TAG $REPOSITORY_FRONTEND:latest
       - docker push $REPOSITORY_BACKEND:$IMAGE_TAG
+      - docker push $REPOSITORY_BACKEND:latest
       - docker push $REPOSITORY_FRONTEND:$IMAGE_TAG
+      - docker push $REPOSITORY_FRONTEND:latest
       - echo "Build e push concluídos."
-
-# TODO: Garanta políticas de IAM adequadas para permitir sts, ecr:GetAuthorizationToken, ecr:BatchCheckLayerAvailability, ecr:PutImage, ecr:InitiateLayerUpload, ecr:UploadLayerPart, ecr:CompleteLayerUpload, ecr:BatchGetImage.
