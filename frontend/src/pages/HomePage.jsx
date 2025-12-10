@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Box, Typography, Snackbar, Alert, Stack, Grid, Chip, Button } from '@mui/material';
+import { Box, Typography, Snackbar, Alert, Stack, Grid, Chip, Button, Card, CardActionArea, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { fetchArticles } from '../api/articlesApi.js';
-import ArticleList from '../components/Article/ArticleList.jsx';
+import ArticleCard from '../components/Article/ArticleCard.jsx';
 import LoadingState from '../components/Feedback/LoadingState.jsx';
 import ErrorState from '../components/Feedback/ErrorState.jsx';
 import { buildExcerpt, estimateReadTime, formatDate, placeholderForTitle } from '../utils/articleUtils.js';
@@ -18,8 +18,8 @@ const HomePage = () => {
     try {
       setLoading(true);
       setError('');
-      const data = await fetchArticles();
-      setArticles(data);
+      const response = await fetchArticles({ page: 1, limit: 6 });
+      setArticles(response.data || []);
     } catch (err) {
       setError(err.message);
       setShowToast(true);
@@ -63,14 +63,19 @@ const HomePage = () => {
         >
           <Stack spacing={2} alignItems="center">
             <Typography variant="h4" sx={{ color: '#E8EAF6' }}>
-              Ainda não há artigos publicados
+              No articles published yet
             </Typography>
             <Typography color="text.secondary" sx={{ maxWidth: 520 }}>
-              Assim que novos conteúdos forem gerados pela IA eles aparecerão aqui automaticamente.
+              As soon as new AI content is generated, it will appear here automatically.
             </Typography>
-            <Button variant="outlined" onClick={loadArticles}>
-              Recarregar
-            </Button>
+            <Stack direction="row" spacing={1.5} flexWrap="wrap" justifyContent="center">
+              <Button variant="outlined" onClick={loadArticles}>
+                Reload
+              </Button>
+              <Button variant="contained" color="primary" onClick={() => navigate('/articles')}>
+                See all articles
+              </Button>
+            </Stack>
           </Stack>
         </Box>
         <Snackbar open={showToast} autoHideDuration={4000} onClose={() => setShowToast(false)}>
@@ -83,12 +88,14 @@ const HomePage = () => {
   }
 
   const featuredArticle = articles[0];
-  const otherArticles = articles.slice(1);
+  const previewArticles = articles.slice(1, 6);
+  const previewCount = Math.min(5, Math.max(0, articles.length - 1));
   const featuredImage = placeholderForTitle(featuredArticle?.title, 800, 620);
   const featuredReadTime = estimateReadTime(featuredArticle?.content);
   const featuredExcerpt = buildExcerpt(featuredArticle?.content, 55);
 
   const handleFeaturedClick = () => navigate(`/articles/${featuredArticle.id}`);
+  const handleSeeAllClick = () => navigate('/articles');
 
   return (
     <Box>
@@ -114,7 +121,7 @@ const HomePage = () => {
             lineHeight: 1.6,
           }}
         >
-          Explorações criadas automaticamente sobre inteligência artificial, tecnologia e inovação em tempo real.
+          Automatically generated explorations on artificial intelligence, technology, and innovation in real time.
         </Typography>
       </Box>
 
@@ -151,7 +158,7 @@ const HomePage = () => {
               <Box sx={{ p: { xs: 4, md: 5 } }}>
                 <Stack direction="row" spacing={1} sx={{ mb: 3 }} alignItems="center">
                   <Chip
-                    label="Em destaque"
+                    label="Featured"
                     size="small"
                     sx={{
                       bgcolor: '#5C6BC0',
@@ -227,7 +234,7 @@ const HomePage = () => {
                   </Box>
                   <Box>
                     <Typography sx={{ color: '#E8EAF6', fontWeight: 600, fontSize: '0.95rem' }}>
-                      Autor IA
+                      AI Author
                     </Typography>
                     <Typography sx={{ color: '#7986CB', fontSize: '0.9rem' }}>
                       {formatDate(featuredArticle.created_at)} • {featuredReadTime}
@@ -236,7 +243,7 @@ const HomePage = () => {
                 </Stack>
 
                 <Button variant="contained" color="primary" size="large" onClick={handleFeaturedClick}>
-                  Ler artigo completo
+                  Read full article
                 </Button>
               </Box>
             </Grid>
@@ -254,15 +261,55 @@ const HomePage = () => {
               color: '#E8EAF6',
             }}
           >
-            Últimos artigos
+            Latest articles
           </Typography>
-          <Typography sx={{ color: '#9FA8DA' }}>{articles.length} publicações</Typography>
+          <Typography sx={{ color: '#9FA8DA' }}>{previewCount} posts</Typography>
         </Stack>
-        {otherArticles.length ? (
-          <ArticleList articles={otherArticles} />
-        ) : (
-          <Typography sx={{ color: '#9FA8DA' }}>Mais artigos chegam em breve.</Typography>
-        )}
+
+        <Grid container spacing={{ xs: 3, md: 4 }}>
+          {previewArticles.map((article) => (
+            <Grid item xs={12} sm={6} md={4} key={article.id}>
+              <ArticleCard article={article} />
+            </Grid>
+          ))}
+
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              sx={{
+                height: '100%',
+                bgcolor: '#151B3D',
+                border: '1px dashed rgba(255, 255, 255, 0.15)',
+                borderRadius: '12px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  borderColor: 'rgba(92, 107, 192, 0.6)',
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 12px 24px rgba(0, 0, 0, 0.35)',
+                },
+              }}
+            >
+              <CardActionArea
+                onClick={handleSeeAllClick}
+                sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}
+              >
+                <CardContent sx={{ p: 3.5, textAlign: 'center', flexGrow: 1 }}>
+                  <Typography variant="h6" sx={{ color: '#E8EAF6', fontWeight: 700, mb: 1 }}>
+                    See all articles
+                  </Typography>
+                  <Typography sx={{ color: '#9FA8DA', mb: 2 }}>
+                    Browse the full library and navigate through every published post.
+                  </Typography>
+                  <Button variant="outlined" size="large">
+                    Go to articles
+                  </Button>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        </Grid>
       </Box>
 
       <Snackbar open={showToast} autoHideDuration={4000} onClose={() => setShowToast(false)}>

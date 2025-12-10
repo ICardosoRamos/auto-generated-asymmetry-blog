@@ -73,7 +73,7 @@ const ArticleDetail = ({ article }) => {
               </Typography>
             ))
           ) : (
-            <Typography variant="body1">Conteúdo indisponível.</Typography>
+            <Typography variant="body1">Content unavailable.</Typography>
           )}
         </Stack>
       </Stack>

@@ -15,11 +15,11 @@ const ErrorState = ({ message, onRetry }) => {
       }}
     >
       <Stack spacing={2} alignItems="center">
-        <Typography variant="h6">Algo deu errado</Typography>
+        <Typography variant="h6">Something went wrong</Typography>
         <Typography color="text.secondary">{message}</Typography>
         {onRetry && (
           <Button variant="contained" startIcon={<RefreshIcon />} onClick={onRetry}>
-            Tentar novamente
+            Try again
           </Button>
         )}
       </Stack>

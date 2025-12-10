@@ -1,6 +1,6 @@
-const defaultFormatter = new Intl.DateTimeFormat('pt-BR', {
-  day: '2-digit',
+const defaultFormatter = new Intl.DateTimeFormat('en-US', {
   month: 'short',
+  day: '2-digit',
   year: 'numeric',
 });
 
@@ -16,7 +16,7 @@ export const buildExcerpt = (text, words = 40) => {
 export const estimateReadTime = (text, wpm = 200) => {
   const words = text ? text.trim().split(/\s+/).length : 0;
   const minutes = Math.max(1, Math.ceil(words / wpm));
-  return `${minutes} min de leitura`;
+  return `${minutes} min read`;
 };
 
 export const placeholderForTitle = (title = 'AutoBlog', width = 800, height = 600) =>

@@ -1,9 +1,30 @@
 import React from 'react';
 import { AppBar, Box, Button, Container, Toolbar, Typography, Stack } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 const AppLayout = ({ children }) => {
+  const location = useLocation();
+
+  const isActive = (path) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(path);
+  };
+
+  const navButtonSx = (path) => ({
+    color: isActive(path) ? '#E8EAF6' : '#9FA8DA',
+    fontSize: '0.95rem',
+    fontWeight: 500,
+    textTransform: 'none',
+    bgcolor: isActive(path) ? 'rgba(255, 255, 255, 0.06)' : 'transparent',
+    '&:hover': {
+      bgcolor: 'rgba(255, 255, 255, 0.06)',
+      color: '#E8EAF6',
+    },
+  });
+
   return (
     <Box
       sx={{
@@ -52,45 +73,30 @@ const AppLayout = ({ children }) => {
               <Button
                 component={RouterLink}
                 to="/"
-                sx={{
-                  color: '#E8EAF6',
-                  fontSize: '0.95rem',
-                  fontWeight: 500,
-                  textTransform: 'none',
-                  '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.06)',
-                  },
-                }}
+                sx={navButtonSx('/')}
               >
-                Início
+                Home
               </Button>
               <Button
-                sx={{
-                  color: '#9FA8DA',
-                  fontSize: '0.95rem',
-                  fontWeight: 500,
-                  textTransform: 'none',
-                  '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.06)',
-                    color: '#E8EAF6',
-                  },
-                }}
+                component={RouterLink}
+                to="/articles"
+                sx={navButtonSx('/articles')}
               >
-                Artigos
+                Articles
               </Button>
               <Button
-                sx={{
-                  color: '#9FA8DA',
-                  fontSize: '0.95rem',
-                  fontWeight: 500,
-                  textTransform: 'none',
-                  '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.06)',
-                    color: '#E8EAF6',
-                  },
-                }}
+                component={RouterLink}
+                to="/about"
+                sx={navButtonSx('/about')}
               >
-                Sobre
+                About
+              </Button>
+              <Button
+                component={RouterLink}
+                to="/admin"
+                sx={navButtonSx('/admin')}
+              >
+                Admin
               </Button>
             </Stack>
           </Toolbar>
